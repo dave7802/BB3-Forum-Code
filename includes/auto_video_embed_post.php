@@ -6,6 +6,7 @@
 * @copyright (c) 2012 / 4seven
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
+* Note: This file is included for use in posting.php, which controls previews.
 */
 
 /**
@@ -51,7 +52,7 @@ $vimeo        = true;
 $yahoo        = true;
 // Activate $youtube or $youtube_lnk. Not both!
 $youtube      = true;
-$youtube_lnk  = false;
+$youtube_lnk  = false;  //Enables a link which opens a spoiler-div to show embedded object.
 // activate $youtube_new for youtu.be support
 $youtube_new  = true;
 #
