@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml-stylesheet type="text/xsl" href="modx.prosilver.en.xsl"?>
+<!--NOTICE: Please open this file in your web browser. If presented with a security warning, you may safely tell it to allow the blocked content.-->
+<!--For security purposes, please check: http://www.phpbb.com/mods/ for the latest version of this MOD.\nAlthough MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD.\nNo support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.5.xsd">
+	<header>
+		<meta name="generator" content="MODX file generated with PP MODX Creator 1.0.1 by tumba25 (offline version)"/>
+		<license><![CDATA[http://opensource.org/licenses/gpl-license.php GNU General Public License v2]]></license>
+		<title lang="en"><![CDATA[Auto Video Embed]]></title>
+		<description lang="en"><![CDATA[This Mod makes it possible to embed videos from popular video-sites by simply posting a link
+
+Credits: 
+Marc Reichelt for EMFF-Player
+Jeroen Wing for JW Player
+
+Features:
+- insert portal-videos by just posting a link
+- insert flv-videos and mp3 by just posting a link
+- enable /disable video-sites
+- easy install (only 3 edits)
+- xhtml 1.0 strict
+
+Current Provided Video Portals:
+- clipfish
+- dailymotion
+- facebook
+- gametrailers 
+- googlevideo
+- metacafe
+- mixcloud
+- myspace
+- myvideo
+- veoh
+- vimeo
+- yahoo
+- youtube
+- youtube_lnk // youtube with spoiler link and hd on default
+- youtube_new // supporting new youtu.be syntax
+
+Other Provided Formats:
+- flv
+- mp3]]></description>
+		<author-notes lang="en"><![CDATA[
+
+    Syntax to Embed:
+    http://www.clipfish.de/video/3272443/darth-vader-tanzt
+    http://www.dailymotion.com/video/xbf4y7_revenge-seoyeun-lee_creation
+    http://www.myflvsite.com/video/yourchosenfile.flv
+    http://de-de.facebook.com/video/video.php?v=396498528455
+    http://www.gametrailers.com/video/jay-z-vs-dj-hero/62888
+    http://video.google.com/videoplay?docid=8135690990081075324&ei=_E6US5PKEoen-AbLyPnYAg&q=test#
+    http://www.metacafe.com/watch/4282595/new_peugeot
+    http://www.mixcloud.com/alucidnation/eclectronica-christmas-special/
+    http://www.mymusicsite.com/audio/yourchosenfile.mp3
+    http://vids.myspace.com/index.cfm?fuseaction=vids.individual&videoid=4517474
+    http://www.myvideo.de/watch/6735176/the_nanny_hehe_ur_geil_xDDDDDDDDDDDDDD
+    http://www.veoh.com/browse/videos/category/movies_horror/watch/e9150
+    http://www.vimeo.com/9325052
+    http://video.yahoo.com/watch/6897444/17936899
+    http://www.youtube.com/watch?v=TyLV4lxMc1g
+	http://www.youtu.be/TyLV4lxMc1g]]></author-notes>
+		<author-group>
+			<author>
+				<realname><![CDATA[Jaques Laquardt]]></realname>
+				<username><![CDATA[4_seven]]></username>
+				<homepage><![CDATA[http://www.4seven.de/forum/6test/index.php]]></homepage>
+			</author>
+		</author-group>
+		<mod-version>0.0.3</mod-version>
+		<installation>
+			<level>easy</level>
+			<time>300</time>
+			<target-version>3.0.9</target-version>
+			<target-version>3.0.10</target-version>
+		</installation>
+	</header>
+	<action-group>
+		<copy>
+		    <file from="root/images/embed.gif" to="images/embed.gif"/>
+			<file from="root/mediaplayer/flv_player.swf" to="mediaplayer/flv_player.swf"/>
+			<file from="root/mediaplayer/mp3_player.swf" to="mediaplayer/mp3_player.swf"/>
+			<file from="root/includes/auto_video_embed_post.php" to="includes/auto_video_embed_post.php"/>
+			<file from="root/includes/auto_video_embed_view.php" to="includes/auto_video_embed_view.php"/>
+		</copy>
+		<open src="posting.php">
+			<edit>
+				<find><![CDATA[            if (!sizeof($error))
+            {]]></find>
+				<action type="after-add"><![CDATA[        // Auto Video Embed / 4seven / 2012    
+         include($phpbb_root_path . 'includes/auto_video_embed_post.' . $phpEx);
+        // Auto Video Embed / 4seven / 2012      ]]></action>
+			</edit>
+		</open>
+		<open src="viewtopic.php">
+			<edit>
+				<find><![CDATA[            // Parse the message and subject
+            $message = censor_text($row['post_text']);]]></find>
+				<action type="after-add"><![CDATA[        // Auto Video Embed / 4seven / 2012    
+         include($phpbb_root_path . 'includes/auto_video_embed_view.' . $phpEx);
+        // Auto Video Embed / 4seven / 2012       ]]></action>
+			</edit>
+		</open>
+		<open src="styles/prosilver/template/overall_header.html">
+			<edit>
+				<find><![CDATA[</head>]]></find>
+				<action type="before-add"><![CDATA[<script type="text/javascript">
+// ]]>&lt;![CDATA[<![CDATA[
+      function spoile(id){
+       if (document.getElementById) {
+        var s = document.getElementById(id);
+        s.style.display = (s.style.display=='block'?'none':'block');
+        } 
+      }
+// ]]>]]&gt;<![CDATA[
+</script>]]></action>
+			</edit>
+		</open>
+		<diy-instructions lang="en"><![CDATA[In
+
+includes/auto_video_embed_post.php
+includes/auto_video_embed_view.php
+
+edit the config area:
+
+// ---------------- CONFIG ---------------  
+   
+so you only have the wanted portals
+
+Clear all Board- and Browser-Caches]]></diy-instructions>
+	</action-group>
+</mod>
