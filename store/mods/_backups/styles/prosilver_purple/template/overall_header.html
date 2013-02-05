@@ -34,6 +34,7 @@
 	      about phpBB please visit http://www.phpbb.com
 -->
 
+<script type="text/javascript" src="{T_SUPER_TEMPLATE_PATH}/js/jquery-1.7.1-min.js"></script>
 <script type="text/javascript">
 // <![CDATA[
 	var jump_page = '{LA_JUMP_PAGE}:';
@@ -77,6 +78,46 @@
 			eval(onunload_functions[i]);
 		}
 	};
+	
+	function spoile(id)
+	{
+       if (document.getElementById) 
+       {
+            var s = document.getElementById(id);
+            s.style.display = (s.style.display=='block') ? 'none' : 'block';
+       } 
+    }
+    
+    function spoilerToggle( tag )
+    {
+        var $spTag = $( tag );
+        var cls    = $spTag.attr( 'class' );
+        
+        if( cls == 'spon' )
+        {
+            $spTag.attr( 'style', 'cursor: pointer;' );
+            $spTag.attr( 'class', 'spoff' );
+        }
+        else
+        {
+            $spTag.attr( 'style', 'cursor:pointer; color:#000; background:#000;' );
+            $spTag.attr( 'class', 'spon' );
+        }
+    }
+    
+    function spoilerToggle2( tag )
+    {
+        if (tag.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') 
+        {
+            tag.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; 
+            tag.innerHTML = '<b>Spoiler: </b><a href=\'#\' onClick=\'return false;\'>hide</a>'; 
+        } 
+        else 
+        {
+            tag.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; 
+            tag.innerHTML = '<b>Spoiler: </b><a href=\'#\' onClick=\'return false;\'>show</a>'; 
+        }
+    }
 
 // ]]>
 </script>
@@ -97,6 +138,21 @@
 </head>
 
 <body id="phpbb" class="section-{SCRIPT_NAME} {S_CONTENT_DIRECTION}">
+<!-- IF S_AL_FB_ENABLED -->
+<div id="fb-root"></div>
+<script type="text/javascript" src="http://connect.facebook.net/{S_FB_LOCALE}/all.js#appId={AL_FB_APPID}&xfbml=1"></script>  
+<script type="text/javascript"> 
+  window.fbAsyncInit = function() {
+    FB.init({appId: '{AL_FB_APPID}', status: true, cookie: true,
+             xfbml: true});
+  };
+  (function() {
+    var e = document.createElement('script'); e.async = true;
+    e.src = document.location.protocol +
+      '//connect.facebook.net/en_US/all.js';
+    document.getElementById('fb-root').appendChild(e);
+  }());
+</script><!-- ENDIF -->
 
 <div id="wrap">
 	<a id="top" name="top" accesskey="t"></a>
@@ -105,10 +161,14 @@
 			<div class="inner"><span class="corners-top"><span></span></span>
 
 			<div id="site-description">
+				<a href="{U_INDEX}" title="{L_INDEX}" id="logo"><img width="100%" title="Spirit Science Forums - A Solarium of Seekers" alt="Spirit Science Forums - A Solarium of Seekers" src="http://thespiritscience.net/forum/styles/prosilver_purple/theme/images/sitebannerv4.jpg" /></a>
+				
+				<!--[CDATA[ 
 				<a href="{U_INDEX}" title="{L_INDEX}" id="logo">{SITE_LOGO_IMG}</a>
 				<h1>{SITENAME}</h1>
 				<p>{SITE_DESCRIPTION}</p>
 				<p class="skiplink"><a href="#start_here">{L_SKIP}</a></p>
+				]]-->
 			</div>
 
 		<!-- IF S_DISPLAY_SEARCH and not S_IN_SEARCH -->
@@ -125,6 +185,10 @@
 
 			<span class="corners-bottom"><span></span></span></div>
 		</div>
+		
+		<div style="margin-top:5px; margin-bottom: 2px; text-align:center;">
+          <iframe scrolling="no" frameborder="0" style="width:680px; height:90px; position:relative; border:0px none; margin:0px; padding:0px;" src="http://thespiritscience.net/adrotation.php?at=h" allowtransparency="true" marginheight="0" marginwidth="0"></iframe>
+        </div>
 
 		<div class="navbar">
 			<div class="inner"><span class="corners-top"><span></span></span>
@@ -138,6 +202,8 @@
 				<!-- IF U_EMAIL_PM --><li class="rightside"><a href="{U_EMAIL_PM}" title="{L_EMAIL_PM}" class="sendemail">{L_EMAIL_PM}</a></li><!-- ENDIF -->
 				<!-- IF U_PRINT_TOPIC --><li class="rightside"><a href="{U_PRINT_TOPIC}" title="{L_PRINT_TOPIC}" accesskey="p" class="print">{L_PRINT_TOPIC}</a></li><!-- ENDIF -->
 				<!-- IF U_PRINT_PM --><li class="rightside"><a href="{U_PRINT_PM}" title="{L_PRINT_PM}" accesskey="p" class="print">{L_PRINT_PM}</a></li><!-- ENDIF -->
+				
+				<li class="icon-home rightside" style="margin-right: 6px;"><a href="http://thespiritscience.net/spirit" title="Click to go back to the Blog" accesskey="s">Home Page</a></li>
 			</ul>
 
 			<!-- IF not S_IS_BOT and S_USER_LOGGED_IN -->
