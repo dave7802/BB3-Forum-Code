@@ -95,7 +95,7 @@ class WPU_Actions {
 	 */	
 	public function css_magic($cssIn) {
 		
-		global $phpbb_root_path, $phpEx, $wpUnited;
+		global $phpbb_root_path, $phpEx, $wpUnited, $phpbbForum;
 		define('WPU_STYLE_FIXER', true);
 		require($phpbb_root_path . 'includes/hooks/hook_wp-united.' . $phpEx);
 
@@ -149,13 +149,8 @@ class WPU_Actions {
 		// Apply or load css magic
 		include($wpUnited->get_plugin_path() . 'css-magic.php');
 		
-		if($pkg == 'phpbb') {
-			$packagePath = $wpUnited->get_setting('phpbb_path');
-			$packageUrl = $phpbbForum->get_board_url();
-		} else {
-			$packagePath = $wpUnited->get_wp_path();
-			$packageUrl = $wpUnited->get_wp_base_url();
-		}
+		$packagePath = $wpUnited->get_setting('phpbb_path');
+		$packageUrl = $phpbbForum->get_board_url();
 		$processImports = !($useTV > -1);
 				
 		$cssMagic = new CSS_Magic($processImports, $packageUrl, $packagePath);
@@ -184,7 +179,24 @@ class WPU_Actions {
 			$cssMagic->makeSpecificByClass('wpuisle', false);
 		}
 		
-		$css = $cssMagic->getCSS();
+		$desc= ($pos == 'inner') ? 'modified to make it more specific' : 'parsed and cached so the style fixer can read it';
+		$now = date("F j, Y, g:i a");
+		$preHeader = <<<COUT
+/**
+	This CSS Stylesheet has been parsed with WP-United. The source is phpBB's style.php.
+	--------------------------------------------------------------------------
+	The CSS in this file has been $desc.
+	You should refer to the original CSS files for the underlying style rules.
+	Purge the phpBB cache to re-generate this CSS.
+	Date/Time generated: $now
+	
+	WP-United (c) John Wells, licensed under the GNU GPL v2. Underlying CSS copyright not affected.
+**/	
+
+
+COUT;
+
+		$css = $preHeader . $cssMagic->getCSS();
 		$cssMagic->clear();
 		
 		//cache fixed CSS
